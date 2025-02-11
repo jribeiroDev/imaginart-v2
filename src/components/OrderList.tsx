@@ -20,53 +20,108 @@ const opcoes = [
   { value: "concluida", label: "Concluída", color: "text-green-600" },
 ];
 
-export function OrderList() {
-  const [selected, setSelected] = useState();
+const data = [
+  {
+    id: 1,
+    name: "nome",
+    products: "encomenda",
+    price: "25.00",
+    total: "25.00",
+  },
+  {
+    id: 2,
+    name: "nome2",
+    products: "encomenda2",
+    price: "30.00",
+    total: "30.00",
+  },
+  {
+    id: 3,
+    name: "nome2",
+    products: "encomenda2",
+    price: "30.00",
+    total: "30.00",
+  },
+];
 
-  const selectedOption = opcoes.find((opcao) => opcao.value === selected);
+export function OrderList() {
+  const [selected, setSelected] = useState<Record<number, string>>({});
+  const handleStatusChange = (orderId: number, value: string) => {
+    setSelected((prev) => ({
+      ...prev,
+      [orderId]: value,
+    }));
+  };
+
+  // order.status ou order completed
+  const isCompleted = true;
 
   return (
-    <Card>
-      <CardContent className="mt-4">
-        <Label className="text-2xl">Nome</Label>
-        <div className="flex flex-col mb-4 mt-4 sm:flex-row justify-between gap-4">
-          <div className="flex items-center gap-2  text-muted-foreground">
-            <Checkbox></Checkbox>
-            <Label>Encomenda 1 - €500.00</Label>
-          </div>
-          <div className="flex gap-2">
-            <Select value={selected} onValueChange={setSelected}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Selecione o estado">
-                  <span
+    <>
+      {data.map((data) => {
+        const selectedOption = opcoes.find(
+          (opcao) => opcao.value === selected[data.id]
+        );
+
+        return (
+          <Card key={data.id} className="mb-4">
+            <CardContent className="mt-4">
+              <Label className="text-2xl">{data.name}</Label>
+              <div className="flex flex-col mb-1 mt-2 sm:flex-row justify-between gap-4">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  {/* ToDo: onCheckChanged  */}
+                  <Checkbox checked={isCompleted}></Checkbox>
+                  <Label
                     className={cn(
-                      selectedOption?.color,
-                      "whitespace-nowrap font-semibold"
+                      isCompleted && "line-through text-muted-foreground"
                     )}
                   >
-                    {selectedOption?.label || "Selecione o estado"}
-                  </span>
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {opcoes.map((opcao) => (
-                  <SelectItem key={opcao.value} value={opcao.value}>
-                    {opcao.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                    {data.products} - €{data.price}
+                  </Label>
+                </div>
+                <div className="flex gap-2">
+                  <Select
+                    value={selected[data.id]}
+                    onValueChange={(value) =>
+                      handleStatusChange(data.id, value)
+                    }
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Selecione o estado">
+                        <span
+                          className={cn(
+                            selectedOption?.color,
+                            "whitespace-nowrap font-semibold"
+                          )}
+                        >
+                          {selectedOption?.label || "Selecione o estado"}
+                        </span>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {opcoes.map((opcao) => (
+                        <SelectItem key={opcao.value} value={opcao.value}>
+                          {opcao.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-            <Button variant="outline" size="icon">
-              <Pencil className="w-4 h-4" />
-            </Button>
-            <Button variant="destructive" size="icon">
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-        <Label className=" text-lg font-semibold">Total: €500.00</Label>
-      </CardContent>
-    </Card>
+                  <Button variant="outline" size="icon">
+                    <Pencil className="w-5 h-5" />
+                  </Button>
+                  <Button variant="destructive" size="icon">
+                    <Trash2 className="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
+              <Label className=" text-lg font-semibold">
+                Total: €{data.total}
+              </Label>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </>
   );
 }

@@ -1,5 +1,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { OrderList } from "./OrderList";
+import { Stock } from "./Stock";
+import { Button } from "./ui/button";
 
 export function Menu() {
   return (
@@ -17,9 +19,24 @@ export function Menu() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="encomendas">
-          <OrderList />
+          <div className="mt-4 flex flex-col">
+            <div className="flex justify-end mb-2">
+              <Button className="w-auto">Nova Encomenda</Button>
+            </div>
+            <OrderList />
+          </div>
         </TabsContent>
-        <TabsContent value="stock">Change your password here.</TabsContent>
+        <TabsContent value="stock">
+          <div className="mt-4 flex flex-col">
+            <div className="flex justify-end mb-2">
+              <Button className="w-auto">Novo Produto</Button>
+            </div>
+            <Stock />
+          </div>
+        </TabsContent>
+        <TabsContent value="encomendasconcluidas">
+          {/* <Stock /> */}
+        </TabsContent>
       </Tabs>
     </>
   );

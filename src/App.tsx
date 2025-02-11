@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="container mx-auto py-6 px-4">
+        <div className="container mx-auto py-6 px-6">
           <Header />
           <ResumeCard />
           <div className="mt-4">
