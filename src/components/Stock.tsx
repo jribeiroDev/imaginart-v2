@@ -2,26 +2,32 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
-
-const data = [
-  {
-    id: 1,
-    name: "Garrafa 750ml",
-    price: "14.00",
-    stock: 20,
-  },
-  {
-    id: 2,
-    name: "Garrafa 500ml",
-    price: "10.00",
-    stock: 10,
-  },
-];
+import { supabaseApi } from "@/api/supabase-api";
+import { useEffect, useState } from "react";
+import type { Product } from "@/api/supabase-api";
 
 export function Stock() {
+  //STATES
+  const [products, setProducts] = useState<Product[]>([]);
+
+  //GET PRODUCTS
+  const fetchProducts = async () => {
+    try {
+      const data = await supabaseApi.getProducts();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  //UPDATE DATA
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <>
-      {data.map((data) => {
+      {products.map((data) => {
         return (
           <Card key={data.id} className="mb-4 flex flex-col justify-center">
             <CardContent className="mt-5">
@@ -30,7 +36,7 @@ export function Stock() {
                   <Label className="text-2xl">{data.name}</Label>
                   <Label className="text-lg">
                     €{data.price} - <span className="font-bold">Stock:</span>{" "}
-                    {data.stock}
+                    {data.quantity}
                   </Label>
                 </div>
                 <div className="flex items-center gap-2">
