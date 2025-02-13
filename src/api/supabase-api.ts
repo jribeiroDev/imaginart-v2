@@ -22,6 +22,18 @@ export const supabaseApi = {
 
   // Add new product
   async addProduct(product: Omit<Product, "id" | "created_at">) {
+    if (!product.name) {
+      throw new Error("Insira o nome do produto!");
+    }
+
+    if (product.price <= 0) {
+      throw new Error("Adicione um preço válido!");
+    }
+
+    if (product.quantity < 0) {
+      throw new Error("Adicione uma quantidade válida!");
+    }
+
     const { data, error } = await supabase
       .from("products")
       .insert(product)

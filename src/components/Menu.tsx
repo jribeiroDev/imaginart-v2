@@ -27,12 +27,7 @@ export function Menu() {
           </div>
         </TabsContent>
         <TabsContent value="stock">
-          <div className="mt-4 flex flex-col">
-            <div className="flex justify-end mb-2">
-              <Button className="w-auto">Novo Produto</Button>
-            </div>
             <Stock />
-          </div>
         </TabsContent>
         <TabsContent value="encomendasconcluidas">
           {/* <Stock /> */}
